@@ -1,4 +1,7 @@
-class Prescription {
+import java.io.Serializable;
+
+public class Prescription implements Serializable {
+
     private String medicationName;
     private String dosage;
     private String instructions;
@@ -15,7 +18,6 @@ class Prescription {
         this.instructions = instructions;
     }
 
-    // Getters
     public String getMedicationName() {
         return medicationName;
     }
@@ -28,7 +30,7 @@ class Prescription {
         return instructions;
     }
 
-    // Display prescription details
+    // Method to display prescription details
     public String getDetails() {
         return "Medication: " + medicationName + ", Dosage: " + dosage + ", Instructions: " + instructions;
     }
