@@ -31,6 +31,8 @@ public class HealthManagementSystemUI {
         System.out.println(GREEN + "1. Manage Patients" + RESET);
         System.out.println(GREEN + "2. Manage Doctors" + RESET);
         System.out.println(GREEN + "3. Manage Appointments" + RESET);
+        System.out.println(GREEN + "4. Manage Prescription" + RESET);  // Option 4
+        System.out.println(GREEN + "5. Manage Payments" + RESET);
         System.out.println(YELLOW + "4. Exit" + RESET);
         System.out.print(BLUE + "Enter your choice: " + RESET);
     }
@@ -55,6 +57,12 @@ public class HealthManagementSystemUI {
                 manageAppointments();
                 break;
             case 4:
+                managePrescriptions();  // Manage Prescriptions (Option 4)
+                break;
+            case 5:
+                managePayments();  // Manage Payments (Option 5)
+                break;
+            case 6:
                 System.out.println(YELLOW + "Exiting system..." + RESET);
                 System.exit(0);
                 break;
@@ -193,7 +201,7 @@ public class HealthManagementSystemUI {
         }
     }
 
-    // Manage Appointments
+
     private static void manageAppointments() {
         while (true) {
             System.out.println("\n" + CYAN + "Appointment Menu" + RESET);
@@ -229,7 +237,7 @@ public class HealthManagementSystemUI {
         System.out.print(GREEN + "Enter appointment time: " + RESET);
         String time = scanner.nextLine();
 
-        // Find patient and doctor by name
+
         Patient patient = null;
         Doctor doctor = null;
 
@@ -261,4 +269,175 @@ public class HealthManagementSystemUI {
         System.out.println("\n" + CYAN + "Appointment List:" + RESET);
         system.showAppointments();
     }
+
+    private static void managePrescriptions() {
+        while (true) {
+            System.out.println("\n" + CYAN + "Prescription Menu" + RESET);
+            System.out.println(GREEN + "1. Add a Prescription for Patient" + RESET);
+            System.out.println(GREEN + "2. View Prescriptions for Patient" + RESET);  // Option to view prescriptions
+            System.out.println(YELLOW + "3. Back to Main Menu" + RESET);
+            System.out.print(BLUE + "Enter your choice: " + RESET);
+
+            int choice = getUserInput();
+            switch (choice) {
+                case 1:
+                    addPrescription();  // Call the method to add a prescription
+                    break;
+                case 2:
+                    viewPrescriptionsForPatient();  // Call the method to view prescriptions for a specific patient
+                    break;
+                case 3:
+                    return;
+                default:
+                    System.out.println(RED + "Invalid choice. Please try again." + RESET);
+            }
+        }
+    }
+
+    private static void addPrescription() {
+        scanner.nextLine();  // Consume newline character
+        System.out.print(GREEN + "Enter patient's name: " + RESET);
+        String patientName = scanner.nextLine();
+
+        // Find patient by name
+        Patient patient = null;
+        for (Patient p : system.getPatients()) {
+            if (p.getName().equalsIgnoreCase(patientName)) {
+                patient = p;
+                break;
+            }
+        }
+
+        if (patient == null) {
+            System.out.println(RED + "Patient not found." + RESET);
+            return;
+        }
+
+        // Get prescription details
+        System.out.print(GREEN + "Enter medication name: " + RESET);
+        String medicationName = scanner.nextLine();
+        System.out.print(GREEN + "Enter dosage: " + RESET);
+        String dosage = scanner.nextLine();
+        System.out.print(GREEN + "Enter instructions: " + RESET);
+        String instructions = scanner.nextLine();
+
+        // Create and add prescription
+        Prescription prescription = new Prescription(medicationName, dosage, instructions);
+        patient.addPrescription(prescription);
+
+        System.out.println(GREEN + "Prescription added successfully." + RESET);
+    }
+
+
+    private static void managePayments() {
+        while (true) {
+            System.out.println("\n" + CYAN + "Payment Menu" + RESET);
+            System.out.println(GREEN + "1. Add a Payment for Patient" + RESET);
+            System.out.println(GREEN + "2. View Payments for Patient" + RESET);  // Option to view payments
+            System.out.println(YELLOW + "3. Back to Main Menu" + RESET);
+            System.out.print(BLUE + "Enter your choice: " + RESET);
+
+            int choice = getUserInput();
+            switch (choice) {
+                case 1:
+                    addPayment();  // Call the method to add a payment
+                    break;
+                case 2:
+                    viewPaymentsForPatient();  // Call the method to view payments for a specific patient
+                    break;
+                case 3:
+                    return;
+                default:
+                    System.out.println(RED + "Invalid choice. Please try again." + RESET);
+            }
+        }
+    }
+
+
+    private static void viewPrescriptionsForPatient() {
+        scanner.nextLine();  // Consume newline character
+        System.out.print(GREEN + "Enter patient's name to view prescriptions: " + RESET);
+        String patientName = scanner.nextLine();
+
+        // Find patient by name
+        Patient patient = null;
+        for (Patient p : system.getPatients()) {
+            if (p.getName().equalsIgnoreCase(patientName)) {
+                patient = p;
+                break;
+            }
+        }
+
+        if (patient == null) {
+            System.out.println(RED + "Patient not found." + RESET);
+            return;
+        }
+
+        System.out.println(CYAN + "Prescriptions for " + patient.getName() + ":" + RESET);
+        for (Prescription prescription : patient.getPrescriptions()) {
+            System.out.println(prescription.getDetails());
+        }
+    }
+    private static void addPayment() {
+        scanner.nextLine();  // Consume newline character
+        System.out.print(GREEN + "Enter patient's name: " + RESET);
+        String patientName = scanner.nextLine();
+
+        // Find the patient by name
+        Patient patient = null;
+        for (Patient p : system.getPatients()) {
+            if (p.getName().equalsIgnoreCase(patientName)) {
+                patient = p;
+                break;
+            }
+        }
+
+        if (patient == null) {
+            System.out.println(RED + "Patient not found." + RESET);
+            return;
+        }
+
+        // Get payment details from the user
+        System.out.print(GREEN + "Enter payment amount: " + RESET);
+        double amount = scanner.nextDouble();
+        scanner.nextLine();  // Consume newline
+        System.out.print(GREEN + "Enter payment method (e.g., Credit Card, Cash, Insurance): " + RESET);
+        String paymentMethod = scanner.nextLine();
+        System.out.print(GREEN + "Enter service description: " + RESET);
+        String serviceDescription = scanner.nextLine();
+        System.out.print(GREEN + "Enter the doctor's name who provided the service: " + RESET);
+        String doctorName = scanner.nextLine();
+
+        // Create a new payment and add it to the patient
+        Payment payment = new Payment(amount, paymentMethod, serviceDescription, doctorName);
+        payment.markAsCompleted();
+        patient.addPayment(payment);
+
+        System.out.println(GREEN + "Payment added successfully." + RESET);
+    }
+
+
+    private static void viewPaymentsForPatient() {
+        scanner.nextLine();  // Consume newline character
+        System.out.print(GREEN + "Enter patient's name to view payments: " + RESET);
+        String patientName = scanner.nextLine();
+
+        // Find the patient by name
+        Patient patient = null;
+        for (Patient p : system.getPatients()) {
+            if (p.getName().equalsIgnoreCase(patientName)) {
+                patient = p;
+                break;
+            }
+        }
+
+        if (patient == null) {
+            System.out.println(RED + "Patient not found." + RESET);
+            return;
+        }
+
+        System.out.println(CYAN + "Payments for " + patient.getName() + ":" + RESET);
+        patient.showPayments();
+    }
 }
+
