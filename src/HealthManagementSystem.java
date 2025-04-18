@@ -60,6 +60,8 @@ public class HealthManagementSystem {
         return result;
     }
 
+
+
     // Other getter methods
     public List<Patient> getPatients() {
         return patients;
