@@ -60,4 +60,13 @@ public class Patient extends Person implements Serializable {
     public List<Prescription> getPrescriptions() {
         return prescriptions;
     }
+    public void showPrescriptions() {
+        if (prescriptions.isEmpty()) {
+            System.out.println("No prescriptions recorded.");
+        } else {
+            for (Prescription prescription : prescriptions) {
+                System.out.println(prescription.getDetails());
+            }
+        }
+    }
 }
