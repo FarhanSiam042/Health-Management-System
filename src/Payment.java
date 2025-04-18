@@ -1,36 +1,37 @@
 import java.io.Serializable;
 import java.time.LocalDate;
 
-class Payment implements Serializable {
+public class Payment implements Serializable {
+
+
     private double amount;
     private String paymentMethod;  // e.g., "Credit Card", "Cash", "Insurance"
     private String status;         // e.g., "Pending", "Completed"
-    private String serviceDescription;  // Description of the service
     private LocalDate paymentDate;  // Date when payment was made
+    private String serviceDescription;  // Description of the service
+    private String doctorName;
+
 
     public Payment() {
         this.amount = 0.0;
         this.paymentMethod = "Unknown";
         this.status = "Pending";
-        this.serviceDescription = "Unknown Service";
         this.paymentDate = LocalDate.now();  // Default to today's date
+        this.serviceDescription = "Unknown Service";
+        this.doctorName = "Unknown";
     }
 
-    // Constructor
-    public Payment(double amount, String paymentMethod, String serviceDescription) {
+    // Constructor with parameters
+    public Payment(double amount, String paymentMethod, String serviceDescription, String doctorName) {
         this.amount = amount;
         this.paymentMethod = paymentMethod;
         this.status = "Pending";  // By default, payment status is pending
-        this.serviceDescription = serviceDescription;
         this.paymentDate = LocalDate.now();  // Set the payment date to today's date
+        this.serviceDescription = serviceDescription;
+        this.doctorName = doctorName;
     }
 
-    // Complete the payment (Change status to 'Completed')
-    public void completePayment() {
-        this.status = "Completed";
-    }
-
-    // Getters
+    // Getters for the payment details
     public double getAmount() {
         return amount;
     }
@@ -43,21 +44,26 @@ class Payment implements Serializable {
         return status;
     }
 
-    public String getServiceDescription() {
-        return serviceDescription;
-    }
-
     public LocalDate getPaymentDate() {
         return paymentDate;
     }
 
-    // Display payment details
+    public String getServiceDescription() {
+        return serviceDescription;
+    }
+
+    // Method to get the payment details as a String
     public String getDetails() {
-        return "Payment Amount: $" + amount +
+        return "Amount: $" + amount +
                 ", Method: " + paymentMethod +
                 ", Status: " + status +
                 ", Service: " + serviceDescription +
-                ", Date: " + paymentDate;
-    }
-}
+                ", Date: " + paymentDate+
+                ", Doctor: " + doctorName;
 
+    }
+    public void markAsCompleted() {
+        this.status = "Completed";
+    }
+
+}
